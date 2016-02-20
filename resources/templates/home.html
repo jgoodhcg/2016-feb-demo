@@ -2,31 +2,6 @@
 {% block content %}
 <div id="preloader">Loading ...<br>It may take a few moments.</div>
 
-<div id="link-bar">
-  <div id='links'>
-
-    <img id="profile-pic" src="/assets/pic-silo.svg"
-         data-swap='/assets/pic.png'
-         class=''
-         width="64" height="64" />
-
-    <a href="http://github.com/jgoodhcg" class='nounderline'>
-      <img src="/assets/github.svg" width="48" height="48"
-           data-swap='/assets/github-active.svg'
-           class='link-img' />
-    </a>
-    <a href="http://linkedin.com/in/jgoodhcg" class='nounderline'>
-      <img src="/assets/linked_in.svg" width="48" height="48"
-           data-swap="/assets/linked_in-active.svg"
-           class='link-img' />
-    </a>
-    <a href="/assets/JustinGoodJanuary2016ResumeANDCoverLetter.pdf" class='nounderline'>
-      <img src="/assets/resume.svg" width="48" height="48"
-           data-swap="/assets/resume-active.svg"
-           class='link-img' />
-    </a>
-  </div>
-</div>
 
 <div id="banner"></div>
 
@@ -357,4 +332,12 @@
           </div>
     </div>
   </div>
+  {% endblock %}
+
+  {% block scripts %}
+  {% script "/js/banner.js" %}
+  {% script "/js/singletimesheet.js" %}
+  {% script "/js/excr.js" %}
+  {% script "/js/focus.js" %}
+  {% script "/js/main.js" %}
   {% endblock %}

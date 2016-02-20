@@ -2,57 +2,73 @@
 <html>
   <head>
     <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <META name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to febdemo</title>
+      <META name="viewport" content="width=device-width, initial-scale=1">
+        <title>Justin Good - Demo Page</title>
 
-    <!-- styles -->
-    {% style "/assets/bootstrap/css/bootstrap.min.css" %}
-    {% style "/assets/font-awesome/css/font-awesome.min.css" %}
-
-    {% style "/css/screen.css" %}
-  </head>
-  <body>
-      <!-- navbar -->
-      <nav class="navbar navbar-light bg-faded" role="navigation">
+        <!-- styles -->
+        {% style "/bootstrap/css/bootstrap.min.css" %}
+        {% style "/css/loading.min.css" %}
+        {% style "/css/lightbox.min.css" %}
+        </head>
+      <body>
+        <!-- navbar -->
+        <nav class="navbar navbar-light bg-faded" role="navigation">
           <button class="navbar-toggler hidden-sm-up"
                   type="button"
                   data-toggle="collapse"
                   data-target="#collapsing-navbar">
-              &#9776;
+            &#9776;
           </button>
           <div class="collapse navbar-toggleable-xs" id="collapsing-navbar">
-              <a class="navbar-brand" href="{{servlet-context}}/">febdemo</a>
-              <ul class="nav navbar-nav">
-                  <li class="nav-item">
-                      <a href="{{servlet-context}}/"
-                         class="navbar-brand{% ifequal page "home.html" %} active{%endifequal%}">
-                      home
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="{{servlet-context}}/about"
-                         class="nav-link{% ifequal page "about.html" %} active{%endifequal%}">
-                      about
-                      </a>
-                  </li>
-              </ul>
+            <a class="navbar-brand" href="{{servlet-context}}/">febdemo</a>
+            <ul class="nav navbar-nav">
+              <li class="nav-item">
+                <a href="{{servlet-context}}/"
+                   class="navbar-brand{% ifequal page "home.html" %} active{%endifequal%}">
+                  home
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{servlet-context}}/about"
+                   class="nav-link{% ifequal page "about.html" %} active{%endifequal%}">
+                  about
+                </a>
+              </li>
+            </ul>
           </div>
-      </nav>
+        </nav>
 
-    <div class="container">
-      {% block content %}
-      {% endblock %}
-    </div>
+        <div class="container">
+          {% block content %}
+          {% endblock %}
+        </div>
 
-    <!-- scripts -->
-    {% script "/assets/jquery/jquery.min.js" %}
-    {% script "/assets/tether/dist/js/tether.min.js" %}
-    {% script "/assets/bootstrap/js/bootstrap.min.js" %}
-
-    <script type="text/javascript">
-      var context = "{{servlet-context}}";
-    </script>
-    {% block page-scripts %}
-    {% endblock %}
-  </body>
-</html>
+        <!-- scripts -->
+        {% script "/js/jquery-1.11.3.min.js" %}
+        {% script "/js/jquery.xcolor.min.js" %}
+        {% script "/js/lightbox.min.js" %}
+        {% script "/js/tap.js" %}
+        {% script "/js/jquery.tap.js" %}
+        {% script "/js/jqueryRotate.js" %}
+        {% script "/bootstrap/js/bootstrap.min.js" %}
+        {% script "/js/scrollToFixed.min.js" %}
+        {% script "/js/d3.min.js" %}
+        {% script "/js/underscore.js" %}
+        {% script "/js/pixi.min.js" %}
+        {% script "/js/moment.min.js" %}
+        {% script "/js/moment-range.min.js" %}
+        {% script "/js/scrollToFixed.min.js" %}
+        {% script "/js/jquery.initialize.js" %}
+        <!--  -->
+        {% script "/js/banner.js" %}
+        {% script "/js/singletimesheet.js" %}
+        {% script "/js/excr.js" %}
+        {% script "/js/focus.js" %}
+        {% script "/js/main.js" %}
+        <script type="text/javascript">
+          var context = "{{servlet-context}}";
+        </script>
+        {% block page-scripts %}
+        {% endblock %}
+      </body>
+      </html>

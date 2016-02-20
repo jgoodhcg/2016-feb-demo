@@ -1,0 +1,109 @@
+Number,Date,Start time,End time,Project,Description,Breaks,Breaks Description
+1,3/10/2015,12:26 PM,1:52 PM,cs375,Tries to get through this stupid lab,,
+2,3/10/2015,6:10 PM,7:17 PM,cs375,Getting super stuck on lab6,,
+3,3/12/2015,12:02 PM,12:50 PM,cs375,Lab 6,,
+4,3/12/2015,3:14 PM,4:10 PM,cs375,Finished lab6,,
+5,3/18/2015,2:39 PM,3:15 PM,cs375,Lab7,,
+6,3/19/2015,11:31 AM,1:00 PM,cs375,Lab7,,
+7,3/23/2015,12:26 PM,2:41 PM,cs375,Presentation Preparation.,,
+8,3/23/2015,5:00 PM,11:14 PM,cs375,Presentation preparation.,,
+9,3/24/2015,10:00 AM,12:57 PM,cs375,Presentation preparation.,,
+10,3/24/2015,6:16 PM,7:37 PM,cs375,Write up of sourcea,,
+11,3/25/2015,1:14 PM,2:53 PM,cs375,Finished sources report.,,
+12,3/26/2015,3:36 PM,5:09 PM,cs375,Lab8,,
+13,3/31/2015,1:00 PM,4:31 PM,cs375,Exam 2,,
+14,4/1/2015,5:15 PM,5:29 PM,cs375,Lab9,,
+15,4/3/2015,11:08 AM,2:24 PM,cs375,Wi-Fi data capture for survey Project.,,
+16,4/6/2015,6:41 PM,8:09 PM,cs375,Coverage and interference,,
+17,4/8/2015,6:43 PM,9:02 PM,cs375,Lab 10,,
+18,4/13/2015,5:38 PM,9:50 PM,cs375,,,
+19,4/19/2015,4:00 PM,4:29 PM,cs375,Study guide,,
+1,3/7/2015,4:16 PM,7:57 PM,CS467,"Cb tutorial, reviewed chris's code and commented for corrections",,
+2,3/8/2015,1:22 PM,5:10 PM,CS467,"Met with group
+Ble initial commit central manager
+Researched pi peripheral
+Discussed meeting",,
+3,3/9/2015,4:30 PM,5:45 PM,CS467,Meeting with mutually human,,
+4,3/15/2015,3:28 PM,5:07 PM,CS467,Milestone report with group.,,
+5,3/16/2015,5:23 PM,6:47 PM,CS467,Presentation preparation.,,
+6,3/17/2015,9:47 AM,9:55 AM,CS467,Noobs installer and walkthrough.,,
+7,3/18/2015,1:17 PM,1:53 PM,CS467,Review old ble code from mh,,
+8,3/18/2015,3:16 PM,3:42 PM,CS467,Practice presentation.,,
+9,3/18/2015,9:30 PM,11:12 PM,CS467,"Install raspian, tmux, vim and write very candid and meaningful group evals",,
+10,3/19/2015,11:56 PM,1:57 AM,CS467,"Reviewed links Adam sent
+Made a stupid mistake an pushed a commit that took too long to figure out how to roll back from
+Tried to resolve some error in storyboard from pulling 
+Looked at adding button for door scanning",,
+11,3/20/2015,3:45 PM,4:34 PM,CS467,"Tried to work out storyboard error 
+Worked on resolving some commit reverts with Adam and dana",,
+12,3/21/2015,3:32 PM,7:57 PM,CS467,"Discussed starboard warnings with group
+Set up meeting with chris
+Research objective c class intertwining for separating Bluetooth code",,
+13,3/21/2015,8:28 PM,8:43 PM,CS467,Looked at how to add button.,,
+14,3/25/2015,5:34 PM,10:01 PM,CS467,"Bluetooth code extracted
+Resolve Git issues
+Pseudo login started",,
+15,3/29/2015,1:33 PM,5:51 PM,CS467,"With Chris 
+Singleton login class
+Switch bar button",,
+16,3/30/2015,7:36 PM,8:10 PM,CS467,Segue and icons,,
+17,3/31/2015,5:03 PM,11:19 PM,CS467,"Created icon 
+Attempted overdue ble development merge 
+Flowchart
+Grammar check on doc",,
+18,4/1/2015,12:15 PM,1:01 PM,CS467,"Diagram
+Design doc revisions 
+Flow chart",,
+19,4/2/2015,7:22 PM,9:51 PM,CS467,"Design critique feedback write up. Work with Chris on merge development and ble, and getting instance if ble to run. Install nodejs on pi",,
+20,4/3/2015,7:29 PM,10:04 PM,CS467,"Set up node with bluez npm bleno for arm architecture 
+IOS recognize s service",,
+21,4/4/2015,3:09 PM,4:14 PM,CS467,Turned register now into a bbutton then talked to Adam and Dana about coordinating effort.,,
+22,4/5/2015,12:51 PM,6:57 PM,CS467,"Ble characteristic connection and writing with chris
+Milestone preparation with Chris and Dana",,
+23,4/8/2015,5:17 PM,6:15 PM,CS467,Meeting for user credentials,,
+24,4/9/2015,3:16 PM,12:35 AM,CS467,"Banner
+Attempted placing",,
+25,4/10/2015,5:30 PM,7:45 PM,CS467,Logo placement,,
+26,4/12/2015,9:09 PM,11:41 PM,CS467,,,
+27,4/17/2015,4:00 PM,4:45 PM,CS467,Meeting gr makers,,
+28,4/17/2015,6:24 PM,8:52 PM,CS467,Ble work,,
+29,4/18/2015,11:48 AM,11:53 AM,CS467,,,
+30,4/18/2015,11:53 AM,11:54 PM,CS467,Final paper. Presentation outline with group,,
+31,4/19/2015,5:57 PM,7:47 PM,CS467,Finished. And merged ble,,
+32,4/20/2015,1:56 PM,4:19 PM,CS467,"Presentation, login, and merge",,
+33,4/21/2015,12:03 AM,12:24 AM,CS467,Table of content,,
+34,4/21/2015,12:08 PM,1:38 PM,CS467,Demo narration,,
+35,4/22/2015,11:12 AM,3:33 PM,CS467,Presentation preparation,,
+1,3/9/2015,2:26 PM,3:27 PM,cs367,"Attempted to build example project, failed.",,
+2,3/9/2015,6:47 PM,9:50 PM,cs367,Can't get anything to build so I'm really frustrated.,,
+3,3/10/2015,11:48 AM,12:25 PM,cs367,Tried a ton more things and failed to get the project to build.,,
+4,3/10/2015,5:20 PM,5:44 PM,cs367,Got project 2 and sample to build.,,
+5,3/10/2015,7:18 PM,8:54 PM,cs367,"Built and placed a sphere, helped josh with conceptually editing camera.",,
+6,3/11/2015,8:02 PM,12:38 AM,cs367,Got newtons cradle motion with and without josh.,,
+7,3/12/2015,6:02 PM,7:56 PM,cs367,Project 2,,
+8,3/13/2015,6:54 PM,10:17 PM,cs367,Project 2 with josh,,
+9,3/14/2015,5:50 PM,7:06 PM,cs367,Figured out how to add visual elements to notice rotation and color them.,,
+10,3/14/2015,7:41 PM,8:13 PM,cs367,Prettied up project 2,,
+11,3/24/2015,7:37 PM,12:05 AM,cs367,Hw3,,
+12,3/26/2015,2:45 PM,2:55 PM,cs367,Looked at what I needed to start,,
+13,3/28/2015,7:03 PM,8:09 PM,cs367,Set up environment,,
+14,3/30/2015,1:48 PM,6:00 PM,cs367,Object creation and fussing with camera controls.,,
+15,4/1/2015,3:26 PM,3:57 PM,cs367,,,
+16,4/1/2015,5:43 PM,7:37 PM,cs367,Project 3,,
+17,4/2/2015,12:11 PM,12:58 PM,cs367,Project 3,,
+18,4/2/2015,3:02 PM,4:54 PM,cs367,Project 2,,
+19,4/11/2015,5:50 PM,10:51 PM,cs367,Project 4 making table,,
+20,4/14/2015,4:10 PM,11:54 PM,cs367,Project 3,,
+21,4/14/2015,10:57 PM,11:22 PM,cs367,Orbit controls,,
+22,4/16/2015,2:57 PM,1:27 AM,cs367,Project 4,,
+23,4/19/2015,9:20 PM,9:41 PM,cs367,Tried to do Project,,
+24,4/21/2015,6:34 PM,10:26 PM,cs367,Study graphics,,
+1,3/10/2015,3:23 PM,4:03 PM,cs361,Finished lab6,,
+2,3/17/2015,1:37 PM,1:54 PM,cs361,Proj 2 read through,,
+3,3/22/2015,8:50 PM,12:16 AM,cs361,,,
+4,3/23/2015,12:52 AM,1:37 AM,cs361,Make file and git repo,,
+5,3/25/2015,3:57 PM,5:12 PM,cs361,Project 2,,
+6,3/25/2015,11:41 PM,12:05 AM,cs361,Project 2,,
+7,3/26/2015,11:54 AM,1:31 PM,cs361,Finished project 2,,
+8,4/15/2015,4:12 PM,6:03 PM,cs361,,,
+9,4/15/2015,8:29 PM,10:53 PM,cs361,Project 3 pt 2,,

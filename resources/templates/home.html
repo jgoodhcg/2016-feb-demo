@@ -1,14 +1,360 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="jumbotron">
-    <h1>Welcome to febdemo</h1>
-    <p>Time to start building your site!</p>
-    <p><a class="btn btn-primary btn-lg" href="http://luminusweb.net">Learn more &raquo;</a></p>
-  </div>
+<div id="preloader">Loading ...<br>It may take a few moments.</div>
 
-  <div class="row">
-    <div class="span12">
-    {{docs|markdown}}
+<div id="link-bar">
+  <div id='links'>
+
+    <img id="profile-pic" src="/assets/pic-silo.svg"
+         data-swap='/assets/pic.png'
+         class=''
+         width="64" height="64" />
+
+    <a href="http://github.com/jgoodhcg" class='nounderline'>
+      <img src="/assets/github.svg" width="48" height="48"
+           data-swap='/assets/github-active.svg'
+           class='link-img' />
+    </a>
+    <a href="http://linkedin.com/in/jgoodhcg" class='nounderline'>
+      <img src="/assets/linked_in.svg" width="48" height="48"
+           data-swap="/assets/linked_in-active.svg"
+           class='link-img' />
+    </a>
+    <a href="/assets/JustinGoodJanuary2016ResumeANDCoverLetter.pdf" class='nounderline'>
+      <img src="/assets/resume.svg" width="48" height="48"
+           data-swap="/assets/resume-active.svg"
+           class='link-img' />
+    </a>
+  </div>
+</div>
+
+<div id="banner"></div>
+
+
+<div id="page" class="container">
+  <div id="content" class="row">
+    <nav id="side-nav" class="hidden-sm hidden-xs col-md-2">
+      <ul class="nav nav-pills nav-stacked">
+        <li class=''><a href="#info">Page Info</a></li>
+        <li class=''><a href="#demo">Demo </a></li>
+        <li class=''><a href="#wyoming">Wyoming</a></li>
+        <li class=''><a href="#makers">GR Makers</a></li>
+        <li class=''><a href="#school-data">School Visualization</a></li>
+        <li class=''><a href="#excr-data">2015 Exercise</a></li>
+        <li class=''><a href="#to-fix">To Fix</a></li>
+      </ul>
+    </nav>
+
+    <div id="info" class="focus-able col-sm-12 col-md-offset-2 col-md-10">
+      <h4>
+        This page is a current demonstration of my front end development, responsive design,
+        and data visualization abilities. It also documents some of my past projects involving
+        back end development, and native mobile development.<br><br>
+        It consists of: <br>
+        <li>descriptions for two of my largest projects</li>
+        <li>implementations of my first attempts at using D3 to visualize some personal data</li>
+        <li>
+          <span data-toggle="tooltip" data-placement="bottom" title="Click on the banner.Hold it down for faster rings.">
+            an <a href='#' >experiment</a> with popular web game framework PIXI
+          </span>
+        </li>
+        <br>
+        <br>
+        <span data-toggle="tooltip" data-placement="bottom" title="Click on links for code segments!">
+          Interesting things used for this page:
+        </span>
+      </h4>
+      <div class="btn-link">
+        <a href="/assets/demo-bootstrap.png" class="list-link" data-lightbox="code" data-title="bootstrap">bootstrap</a>
+      </div>
+      <div class="btn-link">
+        <a href="/assets/demo-scss.png" class="list-link" data-lightbox="code" data-title="scss">scss</a>
+      </div>
+      <div class="btn-link">
+        <a href="/assets/demo-jquery.png" class="list-link" data-lightbox="code" data-title="jquery">jquery</a>
+      </div>
+      <div class="btn-link">
+        <a href="/assets/demo-moment.png" class="list-link" data-lightbox="code" data-title="moment">moment</a>
+      </div>
+      <div class="btn-link">
+        <a href="/assets/demo-pixi.png" class="list-link" data-lightbox="code" data-title="pixi">pixi</a>
+      </div>
+      <div class="btn-link">
+        <a href="/assets/demo-tap.png" class="list-link" data-lightbox="code" data-title="tap">tap</a>
+      </div>
+      <div class="btn-link">
+        <a href="/assets/demo-d3.png" class="list-link" data-lightbox="code" data-title="d3">d3</a>
+      </div>
+      <div class="btn-link">
+        <a href="/assets/demo-lightbox.png" class="list-link" data-lightbox="code" data-title="lightbox">lightbox</a>
+      </div>
+      <div class="btn-link">
+        <a href="/assets/demo-scrolltofixed.png" class="list-link" data-lightbox="code" data-title="scrollToFixed">scrollToFixed</a>
+      </div>
+      <div class="btn-link">
+        <a href="/assets/demo-initialize.png" class="list-link" data-lightbox="code" data-title="initialize">initialize</a>
+      </div>
+
+
+      <!-- <button class="btn-link list-link" data-toggle="popover" title="jQuery" data-pop='/assets/demo-jquery.png' data-lnk='https://jquery.com/' data-ttle="jquery">jquery
+</button>
+<button class="btn-link list-link" data-toggle="popover" title="Moment.js" data-pop='/assets/demo-moment.png' data-lnk='http://momentjs.com/' data-ttle="moment">moment
+</button>
+<button class="btn-link list-link" data-toggle="popover" title="PIXI.js" data-pop='/assets/demo-pixi.png' data-lnk='http://www.pixijs.com/' data-ttle="pixi">pixi
+</button>
+<button class="btn-link list-link" data-toggle="popover" title="Tap.js" data-pop='/assets/demo-tap.png' data-lnk="https://github.com/alexgibson/tap.js/" data-ttle="tap">tap
+</button>
+<button class="btn-link list-link" data-toggle="popover" title="D3.js" data-pop='/assets/demo-d3.png' data-lnk="http://d3js.org/" data-ttle="d3">d3
+</button>
+<button class="btn-link list-link" data-toggle="popover" title="Lightbox.js" data-pop='/assets/demo-lightbox.png' data-lnk="http://lokeshdhakar.com/projects/lightbox2/" data-ttle="lightbox">lightbox
+</button>
+<button class="btn-link list-link" data-toggle="popover" title="ScrollToFixed.js" data-pop='/assets/demo-scrolltofixed.png' data-lnk="https://github.com/bigspotteddog/ScrollToFixed" data-ttle="scrollToFixed">scrollToFixed
+</button>
+<button class="btn-link list-link" data-toggle="popover" title="jquery.initialize.js" data-pop='/assets/demo-initialize.png' data-lnk="https://github.com/adampietrasiak/jquery.initialize/blob/master/jquery.initialize.js" data-ttle="initialize">initialize
+</button> -->
+    </div>
+    <div id='demo' class="focus-able project-container col-sm-12 col-md-offset-2 col-md-10">
+      <div class='project-control' >
+        <img src="/assets/up.svg" alt="/assets/down.svg"
+             id='demo-collapse' class='project-collapse'/>
+        <div class="project-title">Demo </div>
+      </div>
+      <div class="scrolling project">
+        <h2>Demo Page Development Visualization</h2>
+        <h3>November 2015 - January 2016</h3>
+        <h4>My second d3 data visualization. I used a <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwj_1OCd05vKAhVEPRoKHUOHA5kQFgggMAA&url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.rauscha.apps.timesheet%26hl%3Den&usg=AFQjCNFTyef197rG1hRBEqySa-JPzWA-HQ&sig2=2KTnG0XXkBFnxhpKIUF3lw">timesheet app</a> to
+          record the data and export a csv to parse with d3.
+          This module is a visualization of the time I spent making this page, the two types of d3 graphs, and the interactive banner.
+          <br><br>
+          Each circle represents a day,
+          where the top of the circle is 12am. Click on a day to veiw a popup of information.
+          Double click to select just one day. This is a single project instance,
+          more modules like this are used to display different <a href="#school-data">school work time</a> data.
+        </h4>
+        <div id='dm' class='timesheet-container '>
+          <div class="timesheet-control" id='dm-control'></div>
+        </div>
+      </div>
+    </div>
+    <div id="wyoming" class="focus-able project-container col-sm-12 col-md-offset-2 col-md-10">
+      <div class='project-control' >
+        <img src="/assets/up.svg" alt="/assets/down.svg"
+             id='wyoming-collapse' class='project-collapse'/>
+        <div class="project-title">Wyoming</div>
+      </div>
+      <div class="scrolling project">
+        <h2>City of Wyoming - Public Works data entry and reporting tool</h2>
+        <h3>June 2015 - November 2015</h3>
+        <a class="list-link" href="https://drive.google.com/folderview?id=0B9tfFKe_tu4vSV84LWIwWjJlOUE&usp=sharing">Complete Logs</a>
+        <div id="wyoming-pics">
+          <a href="/assets/wyoming1.PNG" data-lightbox="wyoming" data-title="Wyoming"><img src="/assets/wyomingThumb.PNG" class="img-responsive" alt="reporting tool"/></a>
+          <a href="/assets/wyoming2.PNG" data-lightbox="wyoming"></a>
+          <a href="/assets/wyoming3.PNG" data-lightbox="wyoming"></a>
+          <a href="/assets/wyoming4.PNG" data-lightbox="wyoming"></a>
+        </div>
+        <br><br>
+        <h4>
+          A modernization effort for a tool used by the
+          Public Works department of the city of Wyoming. The old tool was a MS
+          Access interface and database, the modernizations became a web app
+          using PHP and MS SQL server as a backend.
+          <br><br>
+          The lifecycle of this
+          project started with a requirments meeting with the Public Works
+          department. After assessing their needs I was left to research what
+          frameworks could be used. When I presented the possible options the
+          IT department managment chose to use PHP, MS SQL server, and whatever
+          front end tools I would need as development progressed. I was the
+          primary developer during my time at Wyoming.
+          <br><br>
+          <span data-toggle="tooltip" data-placement="bottom" title="No available code segments ):">
+            Interesting things used for this project:
+          </span>
+        </h4>
+        <a href="http://foundation.zurb.com/sites/docs/v/5.5.3/components/kitchen_sink.html" class="list-link">  foundation 5  </a>
+        <a href="http://sass-lang.com/" class="list-link">  scss  </a><br>
+        <a href="https://technet.microsoft.com/en-us/library/aa174792(v=sql.80).aspx" class="list-link">  ms sql server 08  </a><br>
+        <a href="http://php.net/releases/5_6_0.php" class="list-link">  php  </a>
+        <a href="https://www.iis.net/" class="list-link">  iis web server  </a>
+        <a href="https://github.com/thekid/inotify-win" class="list-link">  bash/inotify-win  </a>
+        <a href="https://jquery.com/" class="list-link">  jquery  </a>
+        <a href="http://momentjs.com/" class="list-link">  moment  </a>
+        <a href="https://angularjs.org/" class="list-link">  angular  </a> <br>
+        <a href="https://github.com/pdfkit/pdfkit" class="list-link">  pdfkit  </a>
+        <a href="http://underscorejs.org/" class="list-link">  underscore</a> <br>
+      </div>
+    </div>
+    <div id='makers' class="focus-able project-container col-sm-12 col-md-offset-2 col-md-10">
+      <div class='project-control' >
+        <img src="/assets/up.svg" alt="/assets/down.svg"
+             id='makers-collapse' class='project-collapse'/>
+        <div class="project-title">GR Makers</div>
+      </div>
+      <div class="scrolling project">
+        <h2>GR Makers iOS app</h2>
+        <h3>Jan 2015 - May 2015</h3>
+        <h4>
+          My capstone project for Grand Valley, it is an iOS app
+          intended to allow users to create accounts, recieve information,
+          signup for events, and access a restricted space via BLE connection
+          to a door locking mechanism. I was one of 4 developers in the team
+          that completed this project.
+        </h4>
+        <a class="list-link" href="https://docs.google.com/document/d/1Pm6vfahyUnadAJmiUxS3eIJ0t-mj-z1o7x0hJL1sM-Q/edit?usp=sharing">Final Report</a>
+        <div id="maker-pics" class="">
+          <a href="/assets/gr01" data-lightbox="maker" class="nounderline" >
+            <img src="/assets/gr01" style="display: inline;"   alt="ios app screen"/>
+          </a>
+          <a href="/assets/gr04" data-lightbox="maker" class="nounderline">
+            <img src="/assets/gr04" style="display: inline;"   alt="ios app screen"/>
+          </a>
+          <a href="/assets/gr05" data-lightbox="maker" class="nounderline" >
+            <img src="/assets/gr05" style="display: inline;"   alt="ios app screen"/>
+          </a>
+          <a href="/assets/gr02" data-lightbox="maker"></a>
+          <a href="/assets/gr03" data-lightbox="maker"></a>
+          <a href="/assets/gr06" data-lightbox="maker"></a>
+          <a href="/assets/gr07" data-lightbox="maker"></a>
+          <a href="/assets/gr08" data-lightbox="maker"></a>
+          <a href="/assets/gr09" data-lightbox="maker"></a>
+          <a href="/assets/gr10" data-lightbox="maker"></a>
+          <a href="/assets/gr11" data-lightbox="maker"></a>
+          <a href="/assets/gr12" data-lightbox="maker"></a>
+          <a href="/assets/gr13" data-lightbox="maker"></a>
+          <a href="/assets/gr14" data-lightbox="maker"></a>
+          <a href="/assets/gr15" data-lightbox="maker"></a>
+        </div>
+      </div>
+    </div>
+    <div id='school-data' class='focus-able project-container col-sm-12 col-md-offset-2 col-md-10'>
+      <div class='project-control' >
+        <img src="/assets/up.svg" alt="/assets/down.svg"
+             id='school-collapse' class='project-collapse'/>
+        <div class="project-title">School Data</div>
+      </div>
+      <div class="scrolling project">
+        <h2>School Data</h2>
+        <h3>2013 - 2015</h3>
+        <h4>
+          Since my 2nd semester at Grand Valley, I have used a
+          <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwj_1OCd05vKAhVEPRoKHUOHA5kQFgggMAA&url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.rauscha.apps.timesheet%26hl%3Den&usg=AFQjCNFTyef197rG1hRBEqySa-JPzWA-HQ&sig2=2KTnG0XXkBFnxhpKIUF3lw">timesheet app</a> to record all of my time spent for classes
+          <span style="font-style: italic;">outside</span> of lectures.
+          <br><br>
+          Below are visualizations of that time using d3. The data was imported and
+          processed from csv files. All the images are in svg. There are two
+          sections with non-perfect data capture. Two classes from
+          <span style="font-weight: bold;">Spring 2014</span>
+          were lost due to a failed hard drive and my postponment to backup in
+          the cloud. In <span style="font-weight: bold;">Winter 2015</span> I had a complication installing a custom
+          rom on my phone and lost 2 months worth of a semester.
+        </h4>
+        <div id='w13' class='timesheet-container '>
+          <div class="timesheet-control" id='w13-control'></div>
+        </div>
+        <div id='s13' class='timesheet-container'>
+          <div class="timesheet-control" id='s13-control'></div>
+        </div>
+        <div id='f13' class='timesheet-container'>
+          <div class="timesheet-control" id='f13-control'></div>
+        </div>
+        <div id='w14' class='timesheet-container'>
+          <div class="timesheet-control" id='w14-control'></div>
+        </div>
+        <div id='s14' class='timesheet-container'>
+          <div class="timesheet-control" id='s14-control'></div>
+        </div>
+        <div id='f14' class='timesheet-container'>
+          <div class="timesheet-control" id='f14-control'></div>
+        </div>
+        <div id='w15' class='timesheet-container'>
+          <div class="timesheet-control" id='w15-control'></div>
+        </div>
+      </div>
+    </div>
+    <div id='excr-data' class="focus-able project-container col-sm-12 col-md-offset-2 col-md-10">
+      <div class="project-control">
+        <img src="/assets/up.svg" alt="/assets/down.svg"
+             id='excr-data-collapse' class='project-collapse'/>
+        <div class="project-title">Exercise</div>
+      </div>
+      <div class="scrolling project">
+        <h2>Exercise Data</h2>
+        <h3>Jan 2015 - Dec 2015</h3>
+        <h4>
+          Nearly Perfect data capture, for the entire year of 2015, visualized
+          as a stacked bar graph. Each bar represents the number of repetitions
+          done that day. Each exercise is color coded. This was my first attempt
+          at using d3. It is bascially the
+          <a href="http://bost.ocks.org/mike/bar/">bar char tutorial</a>,
+          with some slight modifications.
+        </h4>
+        <br><br>
+        <div id="excr-chart-container" class="excr-chart-container">
+          <svg id='excr-chart' class="excr-chart"></svg>
+        </div>
+      </div>
+    </div>
+    <div id="to-fix" class='focus-able col-sm-12 col-md-offset-2 col-md-10'>
+      <h2>Things to fix</h2>
+
+      <h3>Timesheet Visualizations</h3>
+      <li><h4>better popup that docks to an area rather than hover over content.</h4></li>
+      <li>
+        <h4>
+          General stats about project visible in control area. Things like
+          total time, average time, time per week...
+        </h4>
+      </li>
+      <li><h4>Day of the week indicators or calender layout.</h4></li>
+      <li><h4>Clock-like time indicators on each day object.</h4></li>
+      <li>
+        <h4>
+          Some all nighters (fall 2014) render arcs that don't fit on the circle.
+          These should be parsed out into seperate days.
+          <h4>
+            </li>
+
+          <h3>PIXI Banner</h3>
+          <li><h4>Color blending when rings collide.</h4></li>
+          <li><h4>Multitouch support for creating rings.</h4></li>
+
+          <h3>Exercise Visualization</h3>
+          <li><h4>Floating info that follows mouse until it leaves div.</h4></li>
+          <li><h4>Variable date selection to display with a sliding function.</h4></li>
+
+          <h3>General</h3>
+          <li>
+            <h4>
+              Popover on "interesting things" opens lightbox bot does not put all
+              images, of code snippets, into a set. Each link has to be opened individually.
+            </h4>
+          </li>
+          <li>
+            <h4>
+              Commit points aren't succinct. Commits need to be squashed, with "git rebase" to points
+              where new features are added, tested, and working.
+            </h4>
+          </li>
+          <li>
+            <h4>
+              Better loading page with animation.
+            </h4>
+          </li>
+
+          <h2>Interesting things for my next project</h2>
+          <h3>Front End</h3>
+          <a href="https://jquerymobile.com/" class="list-link">  jquery mobile  </a>
+          <a href="http://jqueryui.com/" class="list-link">  jquery ui  </a>
+          <a href="http://lesscss.org/" class="list-link">  less  </a><br>
+          <a href="https://github.com/mbostock/d3/wiki/Transitions" class="list-link">  d3 transitions  </a>
+          <a href="https://facebook.github.io/react/" class="list-link">  react  </a>
+          <a href="http://browserify.org/" class="list-link">  browserify  </a>
+          <h3>Back End</h3>
+          <a href="https://www.digitalocean.com/" class="list-link">  digital ocean  </a>
+          <a href="http://clojure.org/" class="list-link">  clojure </a>
+          <a href="http://www.luminusweb.net/" class="list-link">  luminous  </a>
+          <a href="https://www.rethinkdb.com/" class="list-link">  rethinkdb </a>
+          </div>
     </div>
   </div>
-{% endblock %}
+  {% endblock %}

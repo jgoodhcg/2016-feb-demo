@@ -157,7 +157,7 @@ $shadow: #2B2B2B;
 
   //small screens and below
   @media only screen and (max-width: 40em) {
-      font-size: 20px;
+    font-size: 20px;
   }
 
   // Medium screens
@@ -167,7 +167,7 @@ $shadow: #2B2B2B;
 
   // Large screens and UP
   @media only screen and (min-width: 64.063em) {
-      font-size: 32px;
+    font-size: 32px;
   }
 }
 
@@ -293,6 +293,7 @@ $shadow: #2B2B2B;
       -webkit-box-shadow:inset 0 0 0 20px $active-project;
       box-shadow:inset 0 0 0 20px $active-project;
       background-color: lighten($active-project, 40);
+      color: #ffffff;
     }
   }
   li a{
@@ -311,24 +312,25 @@ $shadow: #2B2B2B;
     // transition: box-shadow 350ms ease;
     // transition: -webkit-box-shadow 350ms ease;
 
-    -webkit-box-shadow:inset 0 0 0 20px lighten($inactive-project, 20);
-    box-shadow:inset 0 0 0 20px lighten($inactive-project, 20);
+    -webkit-box-shadow:inset 0 0 0 3px $inactive-project;
+    box-shadow:inset 0 0 0 3px $inactive-project;
 
     background-color: lighten($inactive-project, 20);
     font-weight: bold;
     color: $inactive-project;
 
     &:hover{
-      -webkit-box-shadow:inset 0 0 0 3px $inactive-project;
-      box-shadow:inset 0 0 0 3px $inactive-project;
+      -webkit-box-shadow:inset 0 0 0 20px $inactive-project;
+      box-shadow:inset 0 0 0 20px $inactive-project;
+      color: lighten($inactive-project, 30);
     }
   }
 }
 
 #maker-pics img{
-    margin-left: auto;
-    margin-right: auto;
-    width: 31%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 31%;
 }
 
 #wyoming-pics img{
@@ -361,12 +363,12 @@ $shadow: #2B2B2B;
   -webkit-filter: none;
 
   & > .project-control{
-   background-color: lighten($active-project, 20);
-   border-top: 3px solid $active-project;
-   border-left: 3px solid $active-project;
-   border-right: 3px solid $active-project;
-   &.collapsed{
-     border-bottom: 3px solid $active-project;
-   }
- }
+    background-color: lighten($active-project, 20);
+    border-top: 3px solid $active-project;
+    border-left: 3px solid $active-project;
+    border-right: 3px solid $active-project;
+    &.collapsed{
+      border-bottom: 3px solid $active-project;
+    }
+  }
 }

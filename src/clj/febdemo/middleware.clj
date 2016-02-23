@@ -8,11 +8,8 @@
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
             [ring.middleware.format :refer [wrap-restful-format]]
-            [febdemo.config :refer [defaults]]
-            [febdemo.db.core :as db])
-  (:import [javax.servlet ServletContext]
-           [java.util Date]
-           [java.sql Timestamp]))
+            [febdemo.config :refer [defaults]])
+  (:import [javax.servlet ServletContext]))
 
 (defn wrap-context [handler]
   (fn [request]
@@ -56,16 +53,6 @@
       ;; since they're not compatible with this middleware
       ((if (:websocket? request) handler wrapped) request))))
 
-(defn wrap-visitor-stats [handler]
-  (fn [request]
-    ;; writes ip of visitor, uri on server, and timestamp of visiatation to db
-    (do
-      (db/add-visit!
-       (assoc
-         (clojure.set/rename-keys (select-keys request [:remote-addr :uri]) {:remote-addr :ip})
-         :time (.toString (new java.sql.Timestamp (.getTime (new java.util.Date))))))
-      (handler request))))
-
 (defn wrap-base [handler]
   (-> ((:middleware defaults) handler)
       wrap-formats
@@ -77,5 +64,4 @@
             (assoc-in [:security :anti-forgery] false)
             (dissoc :session)))
       wrap-context
-      wrap-internal-error
-      wrap-visitor-stats))
+      wrap-internal-error))

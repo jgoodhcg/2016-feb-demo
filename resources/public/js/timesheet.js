@@ -1,15 +1,14 @@
 var timesheet = (function(){
-  // instance variables
 
-  // TODO will use more than once
-  var width, height, $container, chart, range,
-  all_days = [], days = [],
+  // instance variables
+  var width, height, $container, $window, chart, svg,
+  heightpad = 170,
+  range, days_displayed,
+  days_all = [], days_selected= [],
   project_colors = { },
   break_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)(\D*(?:\d(?!\d?:\d{2}[ap]m\s)\D*)*)/ig,
-  time_stamp_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)/;
-
-  // TODO possibly will use more than once
-  var $window, heightpad = 170;
+  time_stamp_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)/,
+  x = d3.scale.ordinal(), y = d3.scale.linear();
 
   // internal functions
   function meridiem(time){
@@ -38,6 +37,59 @@ var timesheet = (function(){
     if (colors < 1) colors = 1; // defaults to one color - avoid divide by zero
     return "hsl("+colorNum * (360 / colors) % 360 +", 100%, 50%)";
   }
+  function render(){
+    size();
+    draw();
+  }
+  function size(){
+    width = $container.width();
+    height = $window.innerHeight() - heightpad;
+
+    chart.attr('width', width);
+    chart.attr('height', height);
+    chart.select('svg').attr('width', width);
+    chart.select('svg').attr('height', height);
+
+    // x axis days of the week
+    x
+    .rangePoints([0, width])
+    .domain(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
+    // y axis day number of year (out of 365)
+    y
+    .range([0, height])
+    .domain([range.start.format('DDD'), range.end.format('DDD')]);
+  }
+  function draw(){
+    days_displayed = days_displayed.data(days_selected, function(d){
+      return d.date.format('DDD');
+    });
+
+    // new days
+    days_displayed.enter()
+    .append("g")
+    .attr("Class", "day")
+    .append("circle");
+
+    // displaying days
+    days_displayed
+    .attr("transform", function(day){
+      var i = Number(day.date.format('DDD'));
+      var ty = y(i),
+      tx = x(day.date.format('ddd'));
+      return "translate("+tx+","+ty+")";
+    });
+
+    days_displayed.selectAll("circle")
+    .attr("cy", 4)
+    .attr("cx", 4)
+    .attr("r", 4)
+    .attr("stroke", "#DBDBD9")
+    .attr("stroke-width", 2);
+
+    // removing days
+    days_displayed.exit().remove();
+  }
+
 
   // external functions
   return{
@@ -77,15 +129,17 @@ var timesheet = (function(){
         }
         range = moment.range(
           moment.unix(d3.min(tasks, range_accessor)),
-          moment.unix(d3.max(tasks, range_accessor)));
+          moment.unix(d3.max(tasks, range_accessor))
+        );
 
-          // fill all_days
-          range.by('days', function(m){
-            all_days.push({date: m, intervals: []});
-          });
+        // fill days_all with empty days
+        range.by('days', function(m){
+          days_all.push({date: m, intervals: []});
+        });
 
-          // iterate tasks to fill all_days' intervals
-          all_days = _.map(tasks, function(task, i, tasks){
+        // iterate tasks to fill days_all's intervals
+        var intervals = _.chain(tasks).map(
+          function(task, i, tasks){
             var intervals = [],
             format = "MM/DD/YYYY hh:mm ",
             brk = task['Breaks Description'];
@@ -127,33 +181,54 @@ var timesheet = (function(){
               project: task['Project']
             });
             return intervals;
-          });
+          }
+        )
+        .flatten()
+        .groupBy(
+          function(task){
+            return task.start.format('MM/DD/YYYY');
+          }
+        )
+        .value();
 
-          // determine colors for tasks
-          project_colors = _.chain(tasks)
-          .uniq(function(task){
-            return task['Project'];
-          })
-          .map(function(task){
-            return task['Project'];
-          })
-          .value(); // object with projects as keys and undefined values
+        days_all = _.map(days_all,
+          function(day, i){
+            var ints = intervals[day.date.format("MM/DD/YYYY")];
+            return {
+              date: day.date,
+              intervals: ((typeof ints === 'undefined') ? [] : ints)
+            };
+          }
+        );
 
-          project_colors = _.chain(project_colors)
-          .object(_.range(project_colors.length))
-          .mapObject(function(c, p){
-            return makeColor(
-              _.indexOf(project_colors, p) + 1,
-              project_colors.length + 1
+        // determine colors for tasks
+        project_colors = _.chain(tasks)
+        .uniq(function(task){
+          return task['Project'];
+        })
+        .map(function(task){
+          return task['Project'];
+        })
+        .value(); // object with projects as keys and undefined values
+
+        project_colors = _.chain(project_colors)
+        .object(_.range(project_colors.length))
+        .mapObject(function(c, p){
+          return makeColor(
+            _.indexOf(project_colors, p) + 1,
+            project_colors.length + 1
           );
-          })
-          .value(); // object projects as keys and hsl() value for color
+        })
+        .value(); // object projects as keys and hsl() value for color
 
-          console.log(project_colors);
-        });
+        days_selected = days_all.slice(0);
+        svg = d3.select('#'+params.cont+'-svg');
+        days_displayed = svg.selectAll("g .day");
+        render();
+      });
 
-      }
     }
-  })();
+  }
+})();
 
-  timesheet.create({cont:"container", csv:"/assets/fall2014.csv"});
+timesheet.create({cont:"container", csv:"/assets/fall2014.csv"});

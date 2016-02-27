@@ -34,6 +34,11 @@ var timesheet = (function(){
     }
     return r;
   }
+  function makeColor(colorNum, colors){
+    if (colors < 1) colors = 1; // defaults to one color - avoid divide by zero
+    return "hsl("+colorNum * (360 / colors) % 360 +", 100%, 50%)";
+  }
+
   // external functions
   return{
     create: function(params){
@@ -85,7 +90,6 @@ var timesheet = (function(){
             format = "MM/DD/YYYY hh:mm ",
             brk = task['Breaks Description'];
             // parse breaks
-            console.log(break_reg.exec(brk));
             while((m = break_reg.exec(brk)) !== null){
               var p = m[1], desc = m[2],
               psplit = p.match(time_stamp_reg)[0].split('–'); // is not '-' hyphen character
@@ -106,9 +110,6 @@ var timesheet = (function(){
                 isbreak: true,
                 project: task['Project']
               });
-
-              console.log('break');
-              console.log(intervals);
             }
 
             // task
@@ -125,14 +126,34 @@ var timesheet = (function(){
               isbreak: false,
               project: task['Project']
             });
-            // set task color if not present for project TODO
             return intervals;
           });
-          console.log(all_days);
+
+          // determine colors for tasks
+          project_colors = _.chain(tasks)
+          .uniq(function(task){
+            return task['Project'];
+          })
+          .map(function(task){
+            return task['Project'];
+          })
+          .value(); // object with projects as keys and undefined values
+
+          project_colors = _.chain(project_colors)
+          .object(_.range(project_colors.length))
+          .mapObject(function(c, p){
+            return makeColor(
+              _.indexOf(project_colors, p) + 1,
+              project_colors.length + 1
+          );
+          })
+          .value(); // object projects as keys and hsl() value for color
+
+          console.log(project_colors);
         });
 
       }
     }
   })();
 
-  timesheet.create({cont:"container", csv:"/assets/winter2015.csv"});
+  timesheet.create({cont:"container", csv:"/assets/fall2014.csv"});

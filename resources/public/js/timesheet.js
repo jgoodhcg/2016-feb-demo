@@ -57,7 +57,7 @@ var timesheet = (function(){
     // y axis day number of year (out of 365)
     y
     .range([0, height])
-    .domain([range.start.format('DDD'), range.end.format('DDD')]);
+    .domain([range.start.format('w'), range.end.format('w')]);
   }
   function draw(){
     days_displayed = days_displayed.data(days_selected, function(d){
@@ -73,8 +73,7 @@ var timesheet = (function(){
     // displaying days
     days_displayed
     .attr("transform", function(day){
-      var i = Number(day.date.format('DDD'));
-      var ty = y(i),
+      var ty = y(day.date.format('w')),
       tx = x(day.date.format('ddd'));
       return "translate("+tx+","+ty+")";
     });
@@ -84,7 +83,10 @@ var timesheet = (function(){
     .attr("cx", 4)
     .attr("r", 4)
     .attr("stroke", "#DBDBD9")
-    .attr("stroke-width", 2);
+    .attr("stroke-width", 2)
+    .text(function(day){
+      return day.date.format('MM/DD/YYYY ddd');
+    });
 
     // removing days
     days_displayed.exit().remove();

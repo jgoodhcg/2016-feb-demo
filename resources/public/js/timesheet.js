@@ -7,8 +7,7 @@ var timesheet = (function(){
   days_all = [], days_selected= [],
   project_colors = { },
   break_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)(\D*(?:\d(?!\d?:\d{2}[ap]m\s)\D*)*)/ig,
-  time_stamp_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)/,
-  x = d3.scale.ordinal(), y = d3.scale.linear();
+  time_stamp_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)/;
 
   // internal functions
   function meridiem(time){
@@ -43,35 +42,17 @@ var timesheet = (function(){
   }
   function size(){
     width = $container.width() - (margin.left + margin.right);
-    height = $window.innerHeight() - margin.height - (margin.top + margin.bottom);
+    cell = width / 7;
+    stroke = 0.10 * cell;
+    rad = (0.8 * cell) / 2;
+    height = cell * days_selected.length - (margin.top + margin.bottom);
 
     d3.select('#'+$container.attr('id')+'-svg')
-    .attr('width', width)
-    .attr('height', height)
+    .attr('width', width + margin.right + margin.left)
+    .attr('height', height + margin.top + margin.bottom)
     .select('#'+$container.attr('id')+'-svg-group')
     .attr('transform', 'translate('+margin.left+','+margin.top+')');
 
-    // cell size calulations
-    var a = width*height,
-     n = days_selected.length;
-    cell = Math.min(
-      (width/(Math.ceil(width/(Math.sqrt(a/n))))),
-      (width/(Math.ceil(height/Math.sqrt(a/n))))
-    );
-    stroke = 0.10 * cell;
-    rad = (0.9 * cell) / 2;
-
-    // x axis days of the week
-    x
-    .rangePoints([margin.left, width-margin.right])
-    .domain(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
-    // y axis day number of year (out of 365)
-    y
-    .range([margin.top, height-margin.bottom])
-    .domain(
-      [days_selected[0].date.format('w'),
-      days_selected[days_selected.length-1].date.format('w')]
-    );
   }
   function draw(){
     days_displayed = days_displayed.data(days_selected, function(d){
@@ -87,8 +68,8 @@ var timesheet = (function(){
     // displaying days
     days_displayed
     .attr("transform", function(day){
-      var ty = y(day.date.format('w')),
-      tx = x(day.date.format('ddd'));
+      var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
+      tx = cell * day.date.format('d');
       return "translate("+tx+","+ty+")";
     });
 
@@ -120,14 +101,9 @@ var timesheet = (function(){
       $container = $("#"+params.cont);
       $window = $(window);
 
-      width = $container.width() - (margin.left + margin.right);
-      height = $window.innerHeight() - margin.height - (margin.top + margin.bottom);
-
       chart = d3.select('#'+params.cont)
       .append('svg')
       .attr('id', params.cont+'-svg')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
       .append('g')
       .attr('transform', 'translate('+margin.left+','+margin.top+')')
       .attr('id', params.cont+'-svg-group');

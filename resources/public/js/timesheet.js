@@ -1,8 +1,8 @@
 var timesheet = (function(){
 
   // instance variables
-  var width, height, $container, $window, chart, svg,
-  heightpad = 170,
+  var width, height, $container, $window, chart, svg, cell, rad, stroke,
+  margin = {height: 170, top: 10, bottom: 30, left: 10, right: 10},
   range, days_displayed,
   days_all = [], days_selected= [],
   project_colors = { },
@@ -42,22 +42,36 @@ var timesheet = (function(){
     draw();
   }
   function size(){
-    width = $container.width();
-    height = $window.innerHeight() - heightpad;
+    width = $container.width() - (margin.left + margin.right);
+    height = $window.innerHeight() - margin.height - (margin.top + margin.bottom);
 
-    chart.attr('width', width);
-    chart.attr('height', height);
-    chart.select('svg').attr('width', width);
-    chart.select('svg').attr('height', height);
+    d3.select('#'+$container.attr('id')+'-svg')
+    .attr('width', width)
+    .attr('height', height)
+    .select('#'+$container.attr('id')+'-svg-group')
+    .attr('transform', 'translate('+margin.left+','+margin.top+')');
+
+    // cell size calulations
+    var a = width*height,
+     n = days_selected.length;
+    cell = Math.min(
+      (width/(Math.ceil(width/(Math.sqrt(a/n))))),
+      (width/(Math.ceil(height/Math.sqrt(a/n))))
+    );
+    stroke = 0.10 * cell;
+    rad = (0.9 * cell) / 2;
 
     // x axis days of the week
     x
-    .rangePoints([0, width])
-    .domain(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
+    .rangePoints([margin.left, width-margin.right])
+    .domain(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
     // y axis day number of year (out of 365)
     y
-    .range([0, height])
-    .domain([range.start.format('w'), range.end.format('w')]);
+    .range([margin.top, height-margin.bottom])
+    .domain(
+      [days_selected[0].date.format('w'),
+      days_selected[days_selected.length-1].date.format('w')]
+    );
   }
   function draw(){
     days_displayed = days_displayed.data(days_selected, function(d){
@@ -79,11 +93,11 @@ var timesheet = (function(){
     });
 
     days_displayed.selectAll("circle")
-    .attr("cy", 4)
-    .attr("cx", 4)
-    .attr("r", 4)
+    .attr("cy", cell/2)
+    .attr("cx", cell/2)
+    .attr("r", rad)
     .attr("stroke", "#DBDBD9")
-    .attr("stroke-width", 2)
+    .attr("stroke-width", stroke)
     .text(function(day){
       return day.date.format('MM/DD/YYYY ddd');
     });
@@ -106,21 +120,17 @@ var timesheet = (function(){
       $container = $("#"+params.cont);
       $window = $(window);
 
-      width = $container.width();
-      height = $window.innerHeight() - heightpad;
+      width = $container.width() - (margin.left + margin.right);
+      height = $window.innerHeight() - margin.height - (margin.top + margin.bottom);
 
-      chart = d3.select("#"+params.cont)
-      .append("div")
-      .attr("id", params.cont+'-svg-container')
-      .attr("class", "svg-container")
-      .attr("width", width)
-      .attr("height", height);
-
-      chart
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("id", params.cont+"-svg");
+      chart = d3.select('#'+params.cont)
+      .append('svg')
+      .attr('id', params.cont+'-svg')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+      .attr('transform', 'translate('+margin.left+','+margin.top+')')
+      .attr('id', params.cont+'-svg-group');
 
       // load csv data
       d3.csv(params.csv, function(d) {return d;},
@@ -224,8 +234,7 @@ var timesheet = (function(){
         .value(); // object projects as keys and hsl() value for color
 
         days_selected = days_all.slice(0);
-        svg = d3.select('#'+params.cont+'-svg');
-        days_displayed = svg.selectAll("g .day");
+        days_displayed = chart.selectAll("g .day");
         render();
       });
 

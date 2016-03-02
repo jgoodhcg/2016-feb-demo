@@ -45,10 +45,10 @@ var timesheet = (function(){
     draw();
   }
   function size(w){
-    if(typeof w === 'undefined'){
+    if(typeof w !== 'number'){
       width = $container.width() - (margin.left + margin.right);
     }else{
-      width = w;
+      width = w - (margin.left + margin.right);
     }
     cell = width / 7;
     stroke = 0.10 * cell;

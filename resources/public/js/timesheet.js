@@ -3,7 +3,7 @@ var timesheet = (function(){
   // instance variables
   var width, height, $container, $window, chart, svg, cell, rad, stroke,
   margin = {height: 170, top: 10, bottom: 30, left: 10, right: 10},
-  range, days_displayed,
+  range, days_displayed, months_displayed,
   days_all = [], days_selected= [],
   project_colors = { },
   break_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)(\D*(?:\d(?!\d?:\d{2}[ap]m\s)\D*)*)/ig,
@@ -63,17 +63,18 @@ var timesheet = (function(){
 
   }
   function draw(){
-    days_displayed = days_displayed.data(days_selected, function(d){
+    days_displayed = chart.selectAll("g .day")
+    .data(days_selected, function(d){
       return d.date.format('DDD');
     });
 
-    // new days
+    // new
     days_displayed.enter()
     .append("g")
     .attr("Class", "day")
     .append("circle");
 
-    // displaying days
+    // displaying
     days_displayed
     .attr("transform", function(day){
       var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
@@ -91,7 +92,21 @@ var timesheet = (function(){
       return day.date.format('MM/DD/YYYY ddd');
     });
 
-    // removing days
+    console.log(
+      _.chain(days_selected)
+      .groupBy(function(day){
+        return day.date.format('M'); // 1 indexed momentjs
+      })
+      .map(function(month){
+        return month;
+      })
+      .value()
+    );
+
+    months_displayed = chart.selectAll('.month')
+    .data();
+
+    // removing things
     days_displayed.exit().remove();
   }
 
@@ -218,7 +233,6 @@ var timesheet = (function(){
         .value(); // object projects as keys and hsl() value for color
 
         days_selected = days_all.slice(0);
-        days_displayed = chart.selectAll("g .day");
         render();
       });
     },

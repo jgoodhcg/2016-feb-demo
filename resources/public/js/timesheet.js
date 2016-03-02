@@ -36,12 +36,20 @@ var timesheet = (function(){
     if (colors < 1) colors = 1; // defaults to one color - avoid divide by zero
     return "hsl("+colorNum * (360 / colors) % 360 +", 100%, 50%)";
   }
-  function render(){
-    size();
+  function render(params){
+    if(typeof params !== 'undefined'){
+      size(params.width);
+    }else{
+      size();
+    }
     draw();
   }
-  function size(){
-    width = $container.width() - (margin.left + margin.right);
+  function size(w){
+    if(typeof w === 'undefined'){
+      width = $container.width() - (margin.left + margin.right);
+    }else{
+      width = w;
+    }
     cell = width / 7;
     stroke = 0.10 * cell;
     rad = (0.8 * cell) / 2;
@@ -213,7 +221,9 @@ var timesheet = (function(){
         days_displayed = chart.selectAll("g .day");
         render();
       });
-
+    },
+    render: function(params){
+      render(params);
     }
   }
 })();

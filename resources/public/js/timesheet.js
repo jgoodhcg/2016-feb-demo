@@ -32,9 +32,15 @@ var timesheet = (function(){
     }
     return r;
   }
-  function makeColor(colorNum, colors){
-    if (colors < 1) colors = 1; // defaults to one color - avoid divide by zero
-    return "hsl("+colorNum * (360 / colors) % 360 +", 100%, 50%)";
+  function makeColor(colorNum, colors, sat, bri){
+    if (colors < 1) colors = 1; // defaults to one color
+    if (typeof sat !== 'number' || sat < 0 || sat > 100){
+      sat = 100;
+    }
+    if (typeof bri !== 'number' || bri < 0 || bri > 100){
+      bri = 50;
+    }
+    return "hsl("+colorNum * (360 / colors) % 360 +", "+sat+"%, "+bri+"%)";
   }
   function render(params){
     if(typeof params !== 'undefined'){
@@ -51,8 +57,8 @@ var timesheet = (function(){
       width = w - (margin.left + margin.right);
     }
     cell = width / 7;
-    stroke = 0.10 * cell;
-    rad = (0.8 * cell) / 2;
+    stroke = 0.15 * cell;
+    rad = (0.7 * cell) / 2;
     height = cell * days_selected.length - (margin.top + margin.bottom);
 
     d3.select('#'+$container.attr('id')+'-svg')
@@ -83,9 +89,10 @@ var timesheet = (function(){
     .attr('fill' , function(day){
       return makeColor(
         Number(day.date.format('M')),
-        12
+        12, 65, 25
       );
-    });
+    })
+    .attr('opacity', 0.50);
     days_displayed.append("circle")
     .attr("cy", cell/2)
     .attr("cx", cell/2)

@@ -63,53 +63,40 @@ var timesheet = (function(){
 
   }
   function draw(){
+    chart.selectAll('.day').remove();
+
     days_displayed = chart.selectAll("g .day")
     .data(days_selected, function(d){
       return d.date.format('DDD');
-    });
-
-    // new
-    days_displayed.enter()
+    }).enter()
     .append("g")
-    .attr("Class", "day")
-    .append("circle");
-
-    // displaying
-    days_displayed
+    .attr("class", "day")
     .attr("transform", function(day){
       var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
       tx = cell * day.date.format('d');
       return "translate("+tx+","+ty+")";
     });
 
-    days_displayed.selectAll("circle")
+    days_displayed.append("rect")
+    .attr('width', cell)
+    .attr('height', cell)
+    .attr('fill' , function(day){
+      return makeColor(
+        Number(day.date.format('M')),
+        12
+      );
+    });
+    days_displayed.append("circle")
     .attr("cy", cell/2)
     .attr("cx", cell/2)
     .attr("r", rad)
     .attr("stroke", "#DBDBD9")
+    .attr("fill", "#EEE")
     .attr("stroke-width", stroke)
     .text(function(day){
       return day.date.format('MM/DD/YYYY ddd');
     });
-
-    console.log(
-      _.chain(days_selected)
-      .groupBy(function(day){
-        return day.date.format('M'); // 1 indexed momentjs
-      })
-      .map(function(month){
-        return month;
-      })
-      .value()
-    );
-
-    months_displayed = chart.selectAll('.month')
-    .data();
-
-    // removing things
-    days_displayed.exit().remove();
   }
-
 
   // external functions
   return{

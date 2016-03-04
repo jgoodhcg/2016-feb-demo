@@ -69,7 +69,7 @@ var timesheet = (function(){
 
   }
   function draw(){
-    chart.selectAll('.day').remove();
+    chart.selectAll(".day").remove();
 
     days_displayed = chart.selectAll("g .day")
     .data(days_selected, function(d){
@@ -77,10 +77,32 @@ var timesheet = (function(){
     }).enter()
     .append("g")
     .attr("class", "day")
+    .attr("id", function(day){
+      return day.date.format('DDD')+'-g';
+    })
     .attr("transform", function(day){
       var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
       tx = cell * day.date.format('d');
       return "translate("+tx+","+ty+")";
+    })
+    .on('click', function(day){
+
+      this.parentNode.appendChild(this);
+
+      d3.select(this).transition()
+      .ease("elastic")
+      .duration("500")
+      .attr("transform", "scale(4,4)");
+    })
+    .on("dblclick", function(day){
+
+      var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
+      tx = cell * day.date.format('d');
+
+      d3.select(this).transition()
+      .ease("elastic")
+      .duration("500")
+      .attr("transform", "translate("+tx+","+ty+")");
     });
 
     days_displayed.append("rect")
@@ -93,16 +115,14 @@ var timesheet = (function(){
       );
     })
     .attr('opacity', 0.50);
+
     days_displayed.append("circle")
     .attr("cy", cell/2)
     .attr("cx", cell/2)
     .attr("r", rad)
     .attr("stroke", "#DBDBD9")
     .attr("fill", "#EEE")
-    .attr("stroke-width", stroke)
-    .text(function(day){
-      return day.date.format('MM/DD/YYYY ddd');
-    });
+    .attr("stroke-width", stroke);
   }
 
   // external functions

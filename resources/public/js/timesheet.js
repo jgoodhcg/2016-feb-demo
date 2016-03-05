@@ -59,7 +59,9 @@ var timesheet = (function(){
     cell = width / 7;
     stroke = 0.15 * cell;
     rad = (0.7 * cell) / 2;
-    height = cell * days_selected.length - (margin.top + margin.bottom);
+    height = cell * (range.diff('weeks')+1.1) - (margin.top + margin.bottom);
+    console.log(height);
+    console.log(range.diff('weeks'));
 
     d3.select('#'+$container.attr('id')+'-svg')
     .attr('width', width + margin.right + margin.left)
@@ -84,25 +86,6 @@ var timesheet = (function(){
       var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
       tx = cell * day.date.format('d');
       return "translate("+tx+","+ty+")";
-    })
-    .on('click', function(day){
-
-      this.parentNode.appendChild(this);
-
-      d3.select(this).transition()
-      .ease("elastic")
-      .duration("500")
-      .attr("transform", "scale(4,4)");
-    })
-    .on("dblclick", function(day){
-
-      var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
-      tx = cell * day.date.format('d');
-
-      d3.select(this).transition()
-      .ease("elastic")
-      .duration("500")
-      .attr("transform", "translate("+tx+","+ty+")");
     });
 
     days_displayed.append("rect")
@@ -122,7 +105,26 @@ var timesheet = (function(){
     .attr("r", rad)
     .attr("stroke", "#DBDBD9")
     .attr("fill", "#EEE")
-    .attr("stroke-width", stroke);
+    .attr("stroke-width", stroke)
+    .on("click", function(day,i){
+      this.parentNode.parentNode.appendChild(this.parentNode);
+      var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
+      tx = cell * day.date.format('d');
+
+      var overX = (tx + (cell*4)) - width,
+      overY = (ty + (cell*4)) - height;
+
+      d3.select(this).transition()
+      .ease("elastic")
+      .duration("500")
+      .attr("transform", "scale(4,4),translate("+(-(cell/4))+","+(-(cell/4))+")");
+    })
+    .on("dblclick", function(day,i){
+      d3.select(this).transition()
+      .ease("elastic")
+      .duration("500")
+      .attr("transform", "scale(1,1)");
+    });
   }
 
   // external functions

@@ -10,6 +10,11 @@ var timesheet = (function(){
   time_stamp_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)/;
 
   // internal functions
+  function translateDay(day){
+    var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
+    tx = cell * day.date.format('d');
+    return {x: tx, y: ty};
+  }
   function meridiem(time){
     var m = time.charAt(time.length-2),
     r = 'error';
@@ -60,8 +65,6 @@ var timesheet = (function(){
     stroke = 0.15 * cell;
     rad = (0.7 * cell) / 2;
     height = cell * (range.diff('weeks')+1.1) - (margin.top + margin.bottom);
-    console.log(height);
-    console.log(range.diff('weeks'));
 
     d3.select('#'+$container.attr('id')+'-svg')
     .attr('width', width + margin.right + margin.left)
@@ -83,10 +86,10 @@ var timesheet = (function(){
       return day.date.format('DDD')+'-g';
     })
     .attr("transform", function(day){
-      var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
-      tx = cell * day.date.format('d');
-      return "translate("+tx+","+ty+")";
+      var t = translateDay(day);
+      return "translate("+t.x+","+t.y+")";
     });
+
 
     days_displayed.append("rect")
     .attr('width', cell)
@@ -94,37 +97,44 @@ var timesheet = (function(){
     .attr('fill' , function(day){
       return makeColor(
         Number(day.date.format('M')),
-        12, 65, 25
+        12, 40, 35
       );
     })
-    .attr('opacity', 0.50);
+    .attr('opacity', 0.95);
 
     days_displayed.append("circle")
     .attr("cy", cell/2)
     .attr("cx", cell/2)
     .attr("r", rad)
-    .attr("stroke", "#DBDBD9")
-    .attr("fill", "#EEE")
+    .attr("stroke", "#CCC")
+    .attr("fill", "#DDD")
     .attr("stroke-width", stroke)
     .on("click", function(day,i){
       this.parentNode.parentNode.appendChild(this.parentNode);
-      var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
-      tx = cell * day.date.format('d');
+      var t = translateDay(day);
+      var tx = 0, ty = 0;
 
-      var overX = (tx + (cell*4)) - width,
-      overY = (ty + (cell*4)) - height;
+      if(t.x + (4*cell) > width){
+        tx = width - (t.x + (cell*4));
+      }
+
+      if(t.y + (4*cell) > height){
+        ty = height - (t.y + (cell*4));
+      }
 
       d3.select(this).transition()
       .ease("elastic")
       .duration("500")
-      .attr("transform", "scale(4,4),translate("+(-(cell/4))+","+(-(cell/4))+")");
+      .attr("transform", "scale(4,4), translate("+(tx/4)+","+(ty/4)+")");
     })
     .on("dblclick", function(day,i){
+
       d3.select(this).transition()
       .ease("elastic")
       .duration("500")
       .attr("transform", "scale(1,1)");
     });
+
   }
 
   // external functions

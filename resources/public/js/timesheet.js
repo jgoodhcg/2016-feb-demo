@@ -2,14 +2,41 @@ var timesheet = (function(){
 
   // instance variables
   var width, height, $container, $window, chart, svg, cell, rad, stroke,
+  scale = 3.5,
   margin = {height: 170, top: 10, bottom: 30, left: 10, right: 10},
-  range, days_displayed, months_displayed,
+  range,
   days_all = [], days_selected= [],
   project_colors = { },
+  angle = d3.scale.linear(),
   break_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)(\D*(?:\d(?!\d?:\d{2}[ap]m\s)\D*)*)/ig,
   time_stamp_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)/;
 
+  angle.range([0,360])
+  .domain([0,1400]);
+
   // internal functions
+  function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+    var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
+
+    return {
+      x: centerX + (radius * Math.cos(angleInRadians)),
+      y: centerY + (radius * Math.sin(angleInRadians))
+    };
+  }
+  function describeArc(x, y, radius, startAngle, endAngle){
+
+    var start = polarToCartesian(x, y, radius, endAngle);
+    var end = polarToCartesian(x, y, radius, startAngle);
+
+    var arcSweep = endAngle - startAngle <= 180 ? "0" : "1";
+
+    var d = [
+      "M", start.x, start.y,
+      "A", radius, radius, 0, arcSweep, 0, end.x, end.y
+    ].join(" ");
+
+    return d;
+  }
   function translateDay(day){
     var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
     tx = cell * day.date.format('d');
@@ -76,12 +103,21 @@ var timesheet = (function(){
   function draw(){
     chart.selectAll(".day").remove();
 
-    days_displayed = chart.selectAll("g .day")
+    /*
+    <g> .cal-day
+      <rect> .cal-bg
+      <g> .day
+          <circle> .day-bg
+          <path> .task
+          ...
+          <path> .task
+    */
+    var cal_days = chart.selectAll("g .cal-day")
     .data(days_selected, function(d){
       return d.date.format('DDD');
     }).enter()
     .append("g")
-    .attr("class", "day")
+    .attr("class", "cal-day")
     .attr("id", function(day){
       return day.date.format('DDD')+'-g';
     })
@@ -90,10 +126,10 @@ var timesheet = (function(){
       return "translate("+t.x+","+t.y+")";
     });
 
-
-    days_displayed.append("rect")
+    cal_days.append("rect")
     .attr('width', cell)
     .attr('height', cell)
+    .attr('class', 'call-bg')
     .attr('fill' , function(day){
       return makeColor(
         Number(day.date.format('M')),
@@ -102,38 +138,77 @@ var timesheet = (function(){
     })
     .attr('opacity', 0.95);
 
-    days_displayed.append("circle")
+    var days = cal_days.append('g')
+    .attr('class', 'day');
+
+    var days_bg = days.append("circle")
+    .attr("class", "day-bg")
     .attr("cy", cell/2)
     .attr("cx", cell/2)
     .attr("r", rad)
     .attr("stroke", "#CCC")
     .attr("fill", "#DDD")
-    .attr("stroke-width", stroke)
-    .on("click", function(day,i){
-      this.parentNode.parentNode.appendChild(this.parentNode);
-      var t = translateDay(day);
-      var tx = 0, ty = 0;
+    .attr("stroke-width", stroke);
 
-      if(t.x + (4*cell) > width){
-        tx = width - (t.x + (cell*4));
-      }
-
-      if(t.y + (4*cell) > height){
-        ty = height - (t.y + (cell*4));
-      }
-
-      d3.select(this).transition()
-      .ease("elastic")
-      .duration("500")
-      .attr("transform", "scale(4,4), translate("+(tx/4)+","+(ty/4)+")");
+    var tasks = days.selectAll(".task")
+    .data(function(day,i){
+      return day.intervals;
+    }).enter()
+    .append("path")
+    .attr("class", "task")
+    .attr('DEBUGDAY', function(d,i){
+      return d.start.format("DD/MM/YYYY HH:mm")+'  '
+      +d.end.format("DD/MM/YYYY HH:mm");
     })
-    .on("dblclick", function(day,i){
+    .attr("d", function(d,i){
+      // figure number of minutes
+      var zero = moment(d.start.format('MM/DD/YYYY')+' 12:00AM',
+      'MM/DD/YYYY hh:mma'),
+      endMin = d.end.diff(zero, 'minutes')
+      startMin = d.start.diff(zero, 'minutes');
+      // figure angle from minutes
+      var endAngle = angle(endMin),
+      startAngle = angle(startMin);
+      return describeArc(cell/2, cell/2, rad, startAngle, endAngle);
 
-      d3.select(this).transition()
-      .ease("elastic")
-      .duration("500")
-      .attr("transform", "scale(1,1)");
+    })
+    .attr('fill', 'none')
+    .attr('stroke-width', stroke)
+    .attr('stroke', function(d,i){
+      if(d.isbreak){
+        return '#FFF';
+      }else{
+        return project_colors[d.project];
+      }
     });
+
+    // .on("click", function(day,i){
+    //   this.parentNode.parentNode.appendChild(this.parentNode);
+    //   var t = translateDay(day);
+    //   var tx = 0, ty = 0;
+    //
+    //   if(t.x + (scale*cell) > width){
+    //     tx = width - (t.x + (cell*scale));
+    //   }
+    //
+    //   if(t.y + (scale*cell) > height){
+    //     ty = height - (t.y + (cell*scale));
+    //   }
+    //
+    //   d3.select(this).transition()
+    //   .ease("elastic")
+    //   .duration("500")
+    //   .attr("stroke-width", stroke/2)
+    //   .attr("transform", "scale(4,4), translate("+(tx/scale)+","+(ty/scale)+")");
+    // })
+    // .on("dblclick", function(day,i){
+    //
+    //   d3.select(this).transition()
+    //   .ease("elastic")
+    //   .duration("500")
+    //   .attr("stroke-width", stroke)
+    //   .attr("transform", "scale(1,1)");
+    // });
 
   }
 

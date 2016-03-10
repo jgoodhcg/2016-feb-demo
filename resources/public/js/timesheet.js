@@ -28,11 +28,16 @@ var timesheet = (function(){
     var start = polarToCartesian(x, y, radius, endAngle);
     var end = polarToCartesian(x, y, radius, startAngle);
 
-    var arcSweep = endAngle - startAngle <= 180 ? "0" : "1";
+    if(endAngle < startAngle){
+      var longArc = (360 - startAngle) + endAngle <= 180 ? "0" : "1";
+    }else{
+      var longArc = endAngle - startAngle <= 180 ? "0" : "1";
+
+    }
 
     var d = [
       "M", start.x, start.y,
-      "A", radius, radius, 0, arcSweep, 0, end.x, end.y
+      "A", radius, radius, 0, longArc, 0, end.x, end.y
     ].join(" ");
 
     return d;
@@ -163,10 +168,6 @@ var timesheet = (function(){
         this.parentNode.insertBefore(this, this.parentNode.lastChild);
         return "task";
       }
-    })
-    .attr('DEBUGDAY', function(d,i){
-      return d.start.format("DD/MM/YYYY HH:mm")+'  '
-      +d.end.format("DD/MM/YYYY HH:mm");
     })
     .attr("d", function(d,i){
       // figure number of minutes

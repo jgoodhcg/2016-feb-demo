@@ -2,7 +2,7 @@ var timesheet = (function(){
 
   // instance variables
   var width, height, $container, $window, chart, svg, cell, rad, stroke,
-  scale = 3.5,
+  scale = 10,
   margin = {height: 170, top: 10, bottom: 30, left: 10, right: 10},
   range,
   days_all = [], days_selected= [],
@@ -109,6 +109,7 @@ var timesheet = (function(){
     chart.selectAll(".day").remove();
 
     /*
+    <filter #drop-shadow>
     <g> .cal-day
       <rect> .cal-bg
       <g> .day
@@ -117,6 +118,9 @@ var timesheet = (function(){
           ...
           <path> .task
     */
+
+  
+
     var cal_days = chart.selectAll("g .cal-day")
     .data(days_selected, function(d){
       return d.date.format('DDD');
@@ -144,7 +148,34 @@ var timesheet = (function(){
     .attr('opacity', 0.95);
 
     var days = cal_days.append('g')
-    .attr('class', 'day');
+    .attr('class', 'day')
+    .on("click", function(day,i){
+      this.parentNode.parentNode.appendChild(this.parentNode);
+      var t = translateDay(day);
+      var tx = 0, ty = 0;
+
+      if(t.x + (scale*cell) > width && t.x > cell*2){
+        tx = width - (t.x + (cell*scale));
+      }
+
+      if(t.y + (scale*cell) > height){
+        ty = height - (t.y + (cell*scale));
+      }
+
+      d3.select(this).transition()
+      .ease("elastic")
+      .duration("500")
+      .attr("transform", "scale(4,4), translate("+(tx/scale)+","+(ty/scale)+")");
+
+    })
+    .on("dblclick", function(day,i){
+
+      d3.select(this).transition()
+      .ease("elastic")
+      .duration("500")
+      .attr("transform", "scale(1,1)");
+    });
+
 
     var days_bg = days.append("circle")
     .attr("class", "day-bg")
@@ -191,33 +222,6 @@ var timesheet = (function(){
       }
     });
 
-    // .on("click", function(day,i){
-    //   this.parentNode.parentNode.appendChild(this.parentNode);
-    //   var t = translateDay(day);
-    //   var tx = 0, ty = 0;
-    //
-    //   if(t.x + (scale*cell) > width){
-    //     tx = width - (t.x + (cell*scale));
-    //   }
-    //
-    //   if(t.y + (scale*cell) > height){
-    //     ty = height - (t.y + (cell*scale));
-    //   }
-    //
-    //   d3.select(this).transition()
-    //   .ease("elastic")
-    //   .duration("500")
-    //   .attr("stroke-width", stroke/2)
-    //   .attr("transform", "scale(4,4), translate("+(tx/scale)+","+(ty/scale)+")");
-    // })
-    // .on("dblclick", function(day,i){
-    //
-    //   d3.select(this).transition()
-    //   .ease("elastic")
-    //   .duration("500")
-    //   .attr("stroke-width", stroke)
-    //   .attr("transform", "scale(1,1)");
-    // });
 
   }
 

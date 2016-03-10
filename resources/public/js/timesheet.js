@@ -155,7 +155,15 @@ var timesheet = (function(){
       return day.intervals;
     }).enter()
     .append("path")
-    .attr("class", "task")
+    .attr("class", function(d,i){
+      if(d.isbreak){
+        this.parentNode.appendChild(this);
+        return "task break";
+      }else{
+        this.parentNode.insertBefore(this, this.parentNode.lastChild);
+        return "task";
+      }
+    })
     .attr('DEBUGDAY', function(d,i){
       return d.start.format("DD/MM/YYYY HH:mm")+'  '
       +d.end.format("DD/MM/YYYY HH:mm");

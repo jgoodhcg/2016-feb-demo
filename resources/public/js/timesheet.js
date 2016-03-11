@@ -109,17 +109,45 @@ var timesheet = (function(){
     chart.selectAll(".day").remove();
 
     /*
+    <defs>
     <filter #drop-shadow>
+    <g> #svg-group
     <g> .cal-day
-      <rect> .cal-bg
-      <g> .day
-          <circle> .day-bg
-          <path> .task
-          ...
-          <path> .task
+    <rect> .cal-bg
+    <g> .day
+    <circle> .day-bg
+    <path> .task
+    ...
+    <path> .task
     */
 
-  
+    var defs = d3.select('#'+$container.attr('id')+'-svg')
+    .append("defs");
+
+    /* http://bl.ocks.org/cpbotha/5200394 */
+    var filter = defs.append("filter")
+    .attr("id", "drop-shadow")
+    .attr("height", "150%")
+    .attr("width", "150%");
+
+    filter.append("feGaussianBlur")
+    .attr("in", "SourceAlpha")
+    .attr("stdDeviation", 4);
+    // .attr("result", "blur");
+
+    filter.append("feOffset")
+    // .attr("in", "blur")
+    .attr("dx", 2)
+    .attr("dy", 4)
+    // .attr("result", "offsetBlur");
+
+    var feMerge = filter.append("feMerge");
+
+    feMerge.append("feMergeNode");
+    // .attr("in", "offsetBlur")
+    feMerge.append("feMergeNode")
+    .attr("in", "SourceGraphic");
+
 
     var cal_days = chart.selectAll("g .cal-day")
     .data(days_selected, function(d){
@@ -162,11 +190,14 @@ var timesheet = (function(){
         ty = height - (t.y + (cell*scale));
       }
 
-      d3.select(this).transition()
+      var n = d3.select(this);
+      n.transition()
       .ease("elastic")
       .duration("500")
       .attr("transform", "scale(4,4), translate("+(tx/scale)+","+(ty/scale)+")");
 
+      // n.selectAll('circle')
+      // .style("filter", "url(#drop-shadow)");
     })
     .on("dblclick", function(day,i){
 
@@ -184,7 +215,8 @@ var timesheet = (function(){
     .attr("r", rad)
     .attr("stroke", "#CCC")
     .attr("fill", "#DDD")
-    .attr("stroke-width", stroke);
+    .attr("stroke-width", stroke)
+    .style("filter", "url(#drop-shadow)");
 
     var tasks = days.selectAll(".task")
     .data(function(day,i){

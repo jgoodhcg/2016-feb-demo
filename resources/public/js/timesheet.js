@@ -42,7 +42,8 @@ var timesheet = (function(){
 
     return d;
   }
-  function translateDay(day){
+  function dayCords(day){
+    // upper left
     var ty = cell * (day.date.format('w') - days_selected[0].date.format('w')),
     tx = cell * day.date.format('d');
     return {x: tx, y: ty};
@@ -114,6 +115,7 @@ var timesheet = (function(){
     <g> #svg-group
     <g> .cal-day
     <rect> .cal-bg
+      <d> .bg-outline
     <g> .day
     <circle> .day-bg
     <path> .task
@@ -124,7 +126,6 @@ var timesheet = (function(){
     var defs = d3.select('#'+$container.attr('id')+'-svg')
     .append("defs");
 
-    /* http://bl.ocks.org/cpbotha/5200394 */
     var filter = defs.append("filter")
     .attr("id", "drop-shadow")
     .attr("height", "150%")
@@ -133,18 +134,14 @@ var timesheet = (function(){
     filter.append("feGaussianBlur")
     .attr("in", "SourceAlpha")
     .attr("stdDeviation", 4);
-    // .attr("result", "blur");
 
     filter.append("feOffset")
-    // .attr("in", "blur")
     .attr("dx", 2)
-    .attr("dy", 4)
-    // .attr("result", "offsetBlur");
+    .attr("dy", 4);
 
     var feMerge = filter.append("feMerge");
 
     feMerge.append("feMergeNode");
-    // .attr("in", "offsetBlur")
     feMerge.append("feMergeNode")
     .attr("in", "SourceGraphic");
 
@@ -159,7 +156,7 @@ var timesheet = (function(){
       return day.date.format('DDD')+'-g';
     })
     .attr("transform", function(day){
-      var t = translateDay(day);
+      var t = dayCords(day);
       return "translate("+t.x+","+t.y+")";
     });
 
@@ -173,13 +170,61 @@ var timesheet = (function(){
         12, 40, 35
       );
     })
-    .attr('opacity', 0.95);
+    .attr('opacity', 0.70);
+
+    cal_days
+    .append('path')
+    .attr('d', function(day){
+      var c = dayCords(day),
+      path = 'M '+(stroke/4)+' '+(stroke/4),
+      cell = cell - (stroke/4),
+      day_of_week = Number(day.date.format('d')),
+      day_of_month = Number(day.date.format('D')),
+      days_in_month = day.date.daysInMonth();
+
+      // build path clockwise
+
+      // add top line first day of week in month
+      if(day_of_month <= day_of_week ){
+        path += ' h '+(cell);
+      }else{
+        path += ' m '+(cell)+' '+(0);
+      }
+      // add right side line on saturday
+      if(day_of_week == 6){
+        path += ' v '+(cell);
+      }else{
+        path += ' m '+(0)+' '+(cell);
+      }
+      // add bottom line last day of week in month
+      if(days_in_month - day_of_month <= day_of_week){
+        path += ' h '+(-cell);
+      }else{
+        path += ' m '+(-cell)+' '+(0);
+      }
+      // add left side line on sunday
+      if(day_of_week == 0){
+        path += ' v '+(-cell);
+      }else{
+        path += ' m '+(0)+' '+(-cell);
+      }
+      return '';
+      // return path;
+    })
+    .attr("stroke-width", stroke/4)
+    .attr("stroke", function(day){
+      return makeColor(
+        Number(day.date.format('M')),
+        12, 90, 70
+      );
+    })
+    .attr("fill", 'none');
 
     var days = cal_days.append('g')
     .attr('class', 'day')
     .on("click", function(day,i){
       this.parentNode.parentNode.appendChild(this.parentNode);
-      var t = translateDay(day);
+      var t = dayCords(day);
       var tx = 0, ty = 0;
 
       if(t.x + (scale*cell) > width && t.x > cell*2){
@@ -195,9 +240,6 @@ var timesheet = (function(){
       .ease("elastic")
       .duration("500")
       .attr("transform", "scale(4,4), translate("+(tx/scale)+","+(ty/scale)+")");
-
-      // n.selectAll('circle')
-      // .style("filter", "url(#drop-shadow)");
     })
     .on("dblclick", function(day,i){
 

@@ -239,7 +239,8 @@ var timesheet = (function(){
       n.transition()
       .ease("elastic")
       .duration("500")
-      .attr("transform", "scale(4,4), translate("+(tx/scale)+","+(ty/scale)+")");
+      .attr("transform", "scale(4,4), translate("+(tx/scale)+","+(ty/scale)+")")
+      .attr("class", "selected")
     })
     .on("dblclick", function(day,i){
 
@@ -293,6 +294,19 @@ var timesheet = (function(){
         return '#FFF';
       }else{
         return project_colors[d.project];
+      }
+    })
+    .on("click", function(d,i){
+      console.log(d);
+      if($(this.parentElement).attr('class').indexOf('selected') > -1){
+        d3.select(this.parentElement)
+        .append('text')
+        .attr('x', cell/2)
+        .attr('y', cell/2)
+        .attr('font-size', '5px')
+        .attr('fill', 'red')
+        .text(d.desc)
+        .attr('text-anchor', 'middle');
       }
     });
 

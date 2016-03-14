@@ -113,14 +113,14 @@ var timesheet = (function(){
     <defs>
     <filter #drop-shadow>
     <g> #svg-group
-    <g> .cal-day
-    <rect> .cal-bg
-      <d> .bg-outline
-    <g> .day
-    <circle> .day-bg
-    <path> .task
-    ...
-    <path> .task
+      <g> .cal-day
+      <rect> .cal-bg
+        <d> .bg-outline
+        <g> .day
+          <circle> .day-bg
+          <path> .task
+            ...
+          <path> .task
     */
 
     var defs = d3.select('#'+$container.attr('id')+'-svg')
@@ -128,8 +128,10 @@ var timesheet = (function(){
 
     var filter = defs.append("filter")
     .attr("id", "drop-shadow")
-    .attr("height", "150%")
-    .attr("width", "150%");
+    .attr("height", "160%")
+    .attr("y", "-40%")
+    .attr("x", "-40%")
+    .attr("width", "160%");
 
     filter.append("feGaussianBlur")
     .attr("in", "SourceAlpha")
@@ -310,6 +312,18 @@ var timesheet = (function(){
       }
     });
 
+    var day_nums = days.append("text")
+    .attr('x', cell/2)
+    .attr('y', cell/2)
+    .attr('font-size', function(day,i){
+      return (rad);
+    })
+    .attr('fill', 'white')
+    .text(function(day,i){
+      return (day.date.format('D'))
+    })
+    .attr('text-anchor', 'middle')
+    .attr('alignment-baseline', 'middle')
 
   }
 

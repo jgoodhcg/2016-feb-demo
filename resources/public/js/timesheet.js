@@ -242,14 +242,15 @@ var timesheet = (function(){
       .ease("elastic")
       .duration("500")
       .attr("transform", "scale(4,4), translate("+(tx/scale)+","+(ty/scale)+")")
-      .attr("class", "selected")
+      .attr("class", "day selected")
     })
     .on("dblclick", function(day,i){
 
       d3.select(this).transition()
       .ease("elastic")
       .duration("500")
-      .attr("transform", "scale(1,1)");
+      .attr("transform", "scale(1,1)")
+      .attr("class", 'day');
     });
 
 
@@ -301,29 +302,27 @@ var timesheet = (function(){
     .on("click", function(d,i){
       console.log(d);
       if($(this.parentElement).attr('class').indexOf('selected') > -1){
-        d3.select(this.parentElement)
-        .append('text')
+        d3.select(this.parentElement).select('text')
         .attr('x', cell/2)
         .attr('y', cell/2)
-        .attr('font-size', '5px')
-        .attr('fill', 'red')
+        .attr('font-size', stroke)
+        .attr('fill', 'white')
         .text(d.desc)
-        .attr('text-anchor', 'middle');
+        .attr('text-anchor', 'middle')
+        .attr('alignment-baseline', 'middle');
       }
     });
 
     var day_nums = days.append("text")
     .attr('x', cell/2)
     .attr('y', cell/2)
-    .attr('font-size', function(day,i){
-      return (rad);
-    })
+    .attr('font-size', rad)
     .attr('fill', 'white')
     .text(function(day,i){
       return (day.date.format('D'))
     })
     .attr('text-anchor', 'middle')
-    .attr('alignment-baseline', 'middle')
+    .attr('alignment-baseline', 'middle');
 
   }
 

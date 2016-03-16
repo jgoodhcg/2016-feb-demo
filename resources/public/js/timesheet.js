@@ -251,6 +251,19 @@ var timesheet = (function(){
       .duration("500")
       .attr("transform", "scale(1,1)")
       .attr("class", 'day');
+
+      // TODO repeated code figure out how to modularize it issue:001
+      d3.select(this).select('text')
+      .attr('x', cell/2)
+      .attr('y', cell/2)
+      .attr('font-size', rad)
+      .attr('fill', 'white')
+      .text(function(day,i){
+        return (day.date.format('D'))
+      })
+      .attr('text-anchor', 'middle')
+      .attr('alignment-baseline', 'middle');
+
     });
 
 
@@ -307,12 +320,15 @@ var timesheet = (function(){
         .attr('y', cell/2)
         .attr('font-size', stroke)
         .attr('fill', 'white')
-        .text(d.desc)
         .attr('text-anchor', 'middle')
-        .attr('alignment-baseline', 'middle');
+        .attr('alignment-baseline', 'middle')
+        .text('')
+        .append('tspan')
+        .text(d.desc);
       }
     });
 
+    // TODO repeated code issue:001 modularize it!
     var day_nums = days.append("text")
     .attr('x', cell/2)
     .attr('y', cell/2)

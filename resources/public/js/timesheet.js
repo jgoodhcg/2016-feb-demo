@@ -8,6 +8,8 @@ var timesheet = (function(){
   days_all = [], days_selected= [],
   project_colors = { },
   angle = d3.scale.linear(),
+  month_colors = { 0: '#4A464A', 1: '#171617' },
+  day_colors = { stroke: '#787678', fill: '#B0ADB0' }
   break_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)(\D*(?:\d(?!\d?:\d{2}[ap]m\s)\D*)*)/ig,
   time_stamp_reg = /(\d{1,2}:\d{2}[ap]m\s*–\s*\d{1,2}:\d{2}[ap]m)/;
 
@@ -167,12 +169,12 @@ var timesheet = (function(){
     .attr('height', cell)
     .attr('class', 'call-bg')
     .attr('fill' , function(day){
-      return makeColor(
-        Number(day.date.format('M')),
-        12, 40, 35
-      );
-    })
-    .attr('opacity', 0.70);
+      return month_colors[(Number(day.date.format('M'))) % 2];
+      // return makeColor(
+      //   Number(day.date.format('M')),
+      //   12, 40, 35
+      // );
+    });
 
     cal_days
     .append('path')
@@ -272,8 +274,8 @@ var timesheet = (function(){
     .attr("cy", cell/2)
     .attr("cx", cell/2)
     .attr("r", rad)
-    .attr("stroke", "#CCC")
-    .attr("fill", "#DDD")
+    .attr("stroke", day_colors.stroke)
+    .attr("fill", day_colors.fill)
     .attr("stroke-width", stroke)
     .style("filter", "url(#drop-shadow)");
 
@@ -315,10 +317,13 @@ var timesheet = (function(){
     .on("click", function(d,i){
       console.log(d);
       if($(this.parentElement).attr('class').indexOf('selected') > -1){
+
+
+
         d3.select(this.parentElement).select('text')
         .attr('x', cell/2)
         .attr('y', cell/2)
-        .attr('font-size', stroke)
+        .attr('font-size', stroke/4)
         .attr('fill', 'white')
         .attr('text-anchor', 'middle')
         .attr('alignment-baseline', 'middle')

@@ -3,7 +3,7 @@ var timesheet = (function(){
   // instance variables
   var width, height, $container, $window, chart, svg, cell, rad, stroke,
   scale = 10,
-  margin = {height: 170, top: 10, bottom: 30, left: 10, right: 10},
+  margin = {top: 100, bottom: 10, left: 10, right: 10},
   range,
   days_all = [], days_selected= [],
   project_colors = { },
@@ -99,7 +99,7 @@ var timesheet = (function(){
     cell = width / 7;
     stroke = 0.15 * cell;
     rad = (0.7 * cell) / 2;
-    height = cell * (range.diff('weeks')+1.1) - (margin.top + margin.bottom);
+    height = ( cell * (range.diff('weeks')+1.1) );
 
     d3.select('#'+$container.attr('id')+'-svg')
     .attr('width', width + margin.right + margin.left)
@@ -169,11 +169,8 @@ var timesheet = (function(){
     .attr('height', cell)
     .attr('class', 'call-bg')
     .attr('fill' , function(day){
-      return month_colors[(Number(day.date.format('M'))) % 2];
-      // return makeColor(
-      //   Number(day.date.format('M')),
-      //   12, 40, 35
-      // );
+      var num_mc = _.keys(month_colors).length;
+      return month_colors[(Number(day.date.format('M'))) % num_mc];
     });
 
     cal_days
@@ -268,7 +265,6 @@ var timesheet = (function(){
 
     });
 
-
     var days_bg = days.append("circle")
     .attr("class", "day-bg")
     .attr("cy", cell/2)
@@ -359,12 +355,11 @@ var timesheet = (function(){
       // cache dom
       $container = $("#"+params.cont);
       $window = $(window);
-
+      // create elements
       chart = d3.select('#'+params.cont)
       .append('svg')
       .attr('id', params.cont+'-svg')
       .append('g')
-      .attr('transform', 'translate('+margin.left+','+margin.top+')')
       .attr('id', params.cont+'-svg-group');
 
       // load csv data
